@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Orbit</title>
+    <link>https://ansh1902396.github.io/orbit-releases/</link>
+    <description>Orbit for Mac updates</description>
+    <language>en</language>
+    <item>
+      <title>Orbit 0.9.1</title>
+      <pubDate>Wed, 11 Nov 2026 16:34:17 GMT</pubDate>
+      <sparkle:version>10</sparkle:version>
+      <sparkle:shortVersionString>0.9.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+<p><strong>Copy and paste, both ways — and Orbit now keeps itself up to date.</strong></p>
+<h3>What's new</h3>
+<h4>📋 Copy on your phone, paste on your Mac</h4>
+<p>The clipboard now works in both directions. Copy anything on your phone — a WhatsApp message, a link in Chrome, a code — and it's ready to paste on your Mac a moment later, with a quiet "Copied from your phone" so you know it arrived. Tap any item in Orbit's clipboard history and it lands on both devices.</p>
+<p>Android only lets the app on screen read what you copy, so Orbit asks for one switch the first time: open Orbit › Settings › <strong>Phone to Mac</strong> and turn on "Orbit — copy to your Mac". It only looks at what you copy, never your screen, and it skips passwords.</p>
+<h4>⬆️ Orbit updates itself</h4>
+<p>From this version on you won't need to visit the website again. On your Mac, Orbit shows the familiar "A new version is available" window; on your phone, a small card with an <strong>Update</strong> button. One tap — your connection and history stay put.</p>
+<h4>✨ Smoother</h4>
+<p>Faster pickup when you copy, smarter handling of duplicates, and a more reliable connection.</p>
+<h3>Updating from 0.9.0</h3>
+<p>This is the last time you'll update by hand:</p>
+<ul>
+<li><strong>Mac</strong> — download <strong>Orbit-macOS.dmg</strong> and drag Orbit into Applications, replacing the old one.</li>
+<li><strong>Android</strong> — download <strong>Orbit-Android.apk</strong> and install it over the current version. Your pairing and history are kept.</li>
+</ul>
+<h3>Known limitations</h3>
+<ul>
+<li>The Mac build isn't notarized yet: the first launch needs System Settings › Privacy &amp; Security › <strong>Open Anyway</strong>.</li>
+<li>Android 12+ briefly shows its own "Orbit pasted from your clipboard" notice when you copy — that's Android's privacy notice.</li>
+<li>Call audio still stays on your phone; it's next on our list.</li>
+</ul>
+      ]]></description>
+      <enclosure url="https://github.com/Ansh1902396/orbit-releases/releases/download/v0.9.1/Orbit-macOS.zip" length="4355607" type="application/octet-stream" sparkle:edSignature="zdmHDtvy+GJeVUh0wNNmzMAgdOwp4xyfyH9nS+/HDvnwepGutv5emDA7uQi8Y06q8JUurKBxOCqe0klCjZ+jBw=="/>
+    </item>
+  </channel>
+</rss>
