@@ -1,0 +1,688 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Orbit — demo</title>
+<style>
+@font-face{font-family:Serif;src:url(assets/instrument_serif.woff2) format('woff2')}
+@font-face{font-family:SerifI;src:url(assets/instrument_serif_italic.woff2) format('woff2')}
+@font-face{font-family:Manrope;src:url(assets/manrope.woff2) format('woff2');font-weight:200 800}
+@font-face{font-family:Inter;src:url(assets/Inter.woff2) format('woff2');font-weight:100 900}
+/* embedded in the landing page: the page draws its own captions */
+html.embed,html.embed body{background:transparent}
+html.embed #caption,html.embed #title,html.embed #subs,html.embed #soon,html.embed #fade,html.embed #vignette{display:none!important}
+html.embed #stage{background:transparent}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+#stage{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;background:#05070F;font-family:Manrope,sans-serif;color:#fff}
+.abs{position:absolute}
+svg{display:block}
+.glow{position:absolute;border-radius:50%;pointer-events:none}
+#grain{position:absolute;inset:-64px;opacity:.045;mix-blend-mode:overlay;background-size:256px 256px}
+#vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 55%,rgba(0,0,0,.55) 100%)}
+#cam{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+#scrim{position:absolute;left:0;right:0;bottom:0;height:360px;background:linear-gradient(to top,rgba(3,4,10,.94) 0,rgba(3,4,10,.75) 130px,rgba(3,4,10,0) 100%)}
+
+/* ── MacBook ── */
+#mac{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:735px 480px}
+#lid{position:absolute;left:164px;top:96px;width:1160px;height:740px;border-radius:24px 24px 12px 12px;
+  background:linear-gradient(180deg,#26282d,#141518);box-shadow:0 0 0 1px rgba(255,255,255,.09) inset,0 0 0 1.5px #0b0c0e,0 40px 80px rgba(0,0,0,.55)}
+#macScreen{position:absolute;left:16px;top:16px;width:1128px;height:705px;border-radius:10px;overflow:hidden;background:#000}
+#macUI{position:absolute;left:0;top:0;width:1440px;height:900px;transform:scale(.783333);transform-origin:0 0;font-family:Inter,sans-serif;overflow:hidden}
+#camNotch{position:absolute;left:50%;top:0;width:150px;height:20px;margin-left:-75px;background:#000;border-radius:0 0 10px 10px;z-index:50}
+#base{position:absolute;left:94px;top:834px;width:1300px;height:26px;border-radius:3px 3px 22px 22px / 3px 3px 14px 14px;
+  background:linear-gradient(180deg,#5a5d64 0%,#2c2e33 30%,#1b1c20 70%,#0d0d0f 100%);box-shadow:0 1px 0 rgba(255,255,255,.18) inset}
+#base:after{content:"";position:absolute;left:50%;top:0;width:170px;height:8px;margin-left:-85px;border-radius:0 0 10px 10px;background:linear-gradient(180deg,#141518,#2a2c31)}
+#macShadow{position:absolute;left:120px;top:842px;width:1250px;height:60px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.7),transparent 70%)}
+
+/* mac desktop */
+#wall{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 55% at 78% 22%,rgba(255,154,77,.55),transparent 70%),
+  radial-gradient(ellipse 70% 70% at 12% 70%,rgba(59,84,184,.75),transparent 70%),
+  radial-gradient(ellipse 55% 50% at 70% 95%,rgba(255,111,97,.45),transparent 70%),
+  linear-gradient(160deg,#121a3a 0%,#0b1026 55%,#1b1230 100%)}
+#wallDune{position:absolute;left:-10%;right:-10%;bottom:-30%;height:70%;border-radius:50% 50% 0 0;background:radial-gradient(ellipse at 50% 0%,rgba(255,190,140,.22),rgba(20,16,40,.0) 60%)}
+#menubar{position:absolute;left:0;top:0;width:1440px;height:30px;display:flex;align-items:center;padding:0 16px;font-size:13.5px;color:rgba(255,255,255,.92);
+  background:rgba(10,12,24,.28)}
+#menubar .app{font-weight:700;margin-right:20px}
+#menubar .m{margin-right:20px;opacity:.9}
+#menubar .r{margin-left:auto;display:flex;align-items:center;gap:16px}
+#menubar img{width:18px;height:18px;filter:invert(1)}
+.win{position:absolute;border-radius:16px;overflow:hidden;background:#1e1f24;box-shadow:0 0 0 .5px rgba(255,255,255,.14) inset,0 0 0 1px rgba(0,0,0,.5),0 30px 70px rgba(0,0,0,.5);color:#eaeaf0}
+.tl{position:absolute;left:18px;top:18px;display:flex;gap:8px}
+.tl i{width:12px;height:12px;border-radius:50%;display:block}
+.tl i:nth-child(1){background:#FF5F57}.tl i:nth-child(2){background:#FEBC2E}.tl i:nth-child(3){background:#28C840}
+.glassMac{background:rgba(38,38,48,.58);backdrop-filter:blur(28px) saturate(1.8);box-shadow:0 0 0 .5px rgba(255,255,255,.22) inset,0 18px 50px rgba(0,0,0,.45)}
+
+/* notes */
+#notes{left:300px;top:190px;width:640px;height:420px}
+#notes .title{position:absolute;left:0;right:0;top:15px;text-align:center;font-size:13px;font-weight:600;color:rgba(255,255,255,.6)}
+#notes .body{position:absolute;left:44px;top:72px;right:44px;font-size:17px;line-height:38px}
+#notes h1{font-size:28px;font-weight:700;margin-bottom:10px;letter-spacing:-.3px}
+#sel{position:absolute;background:rgba(10,132,255,.45);border-radius:3px;height:30px}
+
+/* browser */
+#browser{left:170px;top:76px;width:1060px;height:760px;background:#fbfaf7}
+#browser .chrome{position:absolute;left:0;right:0;top:0;height:86px;background:#202126}
+#browser .tab{position:absolute;left:96px;top:10px;height:34px;width:300px;border-radius:10px 10px 0 0;background:#34353b;display:flex;align-items:center;padding:0 12px;gap:9px;font-size:12.5px;color:#e8e8ec}
+#browser .omni{position:absolute;left:14px;right:14px;top:48px;height:30px;border-radius:15px;background:#34353b;display:flex;align-items:center;padding:0 14px;gap:9px;font-size:13px;color:#cfd0d6}
+#page{position:absolute;left:0;right:0;top:86px;bottom:0;overflow:hidden}
+#pageInner{position:absolute;left:0;right:0;top:0;padding:56px 0 0}
+.art{width:640px;margin:0 auto;color:#1d1c1a}
+.art .kick{font:700 11px Inter;letter-spacing:2.4px;color:#b25d2c}
+.art h1{font:400 54px/1.02 Serif;letter-spacing:-.5px;margin:14px 0 14px}
+.art .by{font:500 13px Inter;color:#8a857c;margin-bottom:26px}
+.art .hero{height:280px;border-radius:6px;margin-bottom:28px;overflow:hidden}
+.art p{font:400 17px/1.7 Inter;color:#3a3833;margin-bottom:18px}
+
+/* finder */
+#finder{left:280px;top:170px;width:820px;height:500px}
+#finder .side{position:absolute;left:0;top:0;bottom:0;width:190px;background:rgba(255,255,255,.04);padding:58px 14px 0}
+#finder .side div{font-size:13px;color:rgba(255,255,255,.75);height:30px;display:flex;align-items:center;gap:9px;padding:0 9px;border-radius:7px}
+#finder .side .on{background:rgba(255,255,255,.1);color:#fff}
+#finder .side .h{font-size:11px;font-weight:600;color:rgba(255,255,255,.35);height:26px}
+#finder .ttl{position:absolute;left:214px;top:16px;font-size:14px;font-weight:700}
+#finder .grid{position:absolute;left:214px;top:66px;right:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:22px 18px}
+.thumb{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.82)}
+.thumb .ph{width:124px;height:92px;border-radius:5px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.thumb .nm{padding:2px 7px;border-radius:5px}
+
+/* banner + call panel + dropzone */
+#banner{position:absolute;left:1070px;top:40px;width:356px;border-radius:22px;overflow:hidden}
+#banner .row{display:flex;gap:12px;padding:14px 14px 0;height:76px}
+#banner .ic{width:40px;height:40px;border-radius:10px;flex:none;background:url(assets/orbit-icon-1024.png) center/118% no-repeat}
+#banner .t{font-size:13.5px;font-weight:700;display:flex;justify-content:space-between}
+#banner .t span{font-weight:400;color:rgba(255,255,255,.5);font-size:12px}
+#banner .b{font-size:13.5px;color:rgba(255,255,255,.85);margin-top:2px;line-height:1.3}
+#banner .sub{font-size:11.5px;color:rgba(255,255,255,.5);margin-top:3px}
+#reply{margin:6px 14px 0;height:36px;border-radius:18px;background:rgba(255,255,255,.1);display:flex;align-items:center;padding:0 6px 0 14px;font-size:13.5px;color:rgba(255,255,255,.5)}
+#reply .send{margin-left:auto;width:26px;height:26px;border-radius:13px;background:#0A84FF;display:flex;align-items:center;justify-content:center;color:#fff}
+#caret{display:inline-block;width:1.5px;height:16px;background:#0A84FF;margin-left:1px;vertical-align:-3px}
+#call{position:absolute;left:1054px;top:40px;width:372px;height:84px;border-radius:22px;display:flex;align-items:center;padding:0 16px 0 19px;gap:13px}
+#call .av{width:46px;height:46px;border-radius:50%;background:linear-gradient(#9e9e9e,#7a7a7a);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:17px;flex:none;position:relative}
+#call .ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.6)}
+#call .nm{font-size:14px;font-weight:600}
+#call .st{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:2px}
+.rb{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;position:absolute;top:21px}
+#dz{position:absolute;top:330px;width:168px;height:188px;border-radius:26px;display:flex;flex-direction:column;align-items:center;padding-top:26px}
+#dz .c{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,#FFB067,#FF6F61);display:flex;align-items:center;justify-content:center;position:relative}
+#dz .n{font-size:12.5px;font-weight:600;margin-top:16px}
+#dz .cap{font-size:11px;color:rgba(255,255,255,.55);margin-top:3px}
+#ghost{position:absolute;width:124px;height:92px;border-radius:6px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.5)}
+#cursor{position:absolute;left:0;top:0;z-index:100;transform-origin:0 0}
+
+/* ── Phone ── */
+#phone{position:absolute;left:1454px;top:92px;width:374px;height:785px;transform-origin:187px 392px}
+#pframe{position:absolute;inset:0;border-radius:58px;background:linear-gradient(140deg,#4a4c54,#1b1c20 40%,#2b2d33 75%,#131417);
+  box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 0 0 2px #0b0b0d,0 40px 80px rgba(0,0,0,.55)}
+#pframe:before{content:"";position:absolute;right:-3px;top:170px;width:4px;height:90px;border-radius:2px;background:#2a2b30}
+#pframe:after{content:"";position:absolute;right:-3px;top:290px;width:4px;height:52px;border-radius:2px;background:#2a2b30}
+#pscreen{position:absolute;left:11px;top:11px;width:352px;height:763px;border-radius:47px;overflow:hidden;background:#000}
+#pUI{position:absolute;left:0;top:0;width:393px;height:852px;transform:scale(.895674);transform-origin:0 0;overflow:hidden;font-family:Manrope,sans-serif}
+.pimg{position:absolute;left:0;top:0;width:393px;height:852px}
+#punch{position:absolute;left:50%;top:12px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#000;box-shadow:0 0 0 1.5px #111;z-index:80}
+#sbar{position:absolute;left:0;right:0;top:0;height:36px;display:flex;align-items:center;padding:4px 26px 0 30px;font:600 14px Inter;z-index:70}
+#sbar .r{margin-left:auto;display:flex;gap:6px;align-items:center}
+#tabbar{position:absolute;left:28px;right:28px;bottom:14px;height:66px;border-radius:33px;padding:6px;display:flex;
+  backdrop-filter:blur(26px) saturate(1.5);z-index:40}
+#tabbar .it{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:600 12px Manrope;position:relative;z-index:2}
+#pill{position:absolute;top:6px;bottom:6px;border-radius:27px;z-index:1}
+.hu{position:absolute;left:10px;right:10px;top:40px;border-radius:26px;padding:14px 16px;z-index:60;background:rgba(32,34,44,.86);backdrop-filter:blur(30px);box-shadow:0 0 0 .5px rgba(255,255,255,.12) inset,0 14px 40px rgba(0,0,0,.45)}
+.hu .hd{display:flex;align-items:center;gap:7px;font:600 11.5px Inter;color:rgba(255,255,255,.6)}
+.hu .ai{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hu .tt{font:600 15px Inter;margin-top:8px}
+.hu .tx{font:400 14px/1.35 Inter;color:rgba(255,255,255,.82);margin-top:2px}
+#callscr{position:absolute;inset:0;z-index:55;background:radial-gradient(ellipse at 50% 20%,#3a3f5c,#141625 60%,#090a12);text-align:center;font-family:Inter}
+#callscr .lbl{margin-top:96px;font-size:14px;color:rgba(255,255,255,.65)}
+#callscr .av{width:112px;height:112px;border-radius:50%;margin:30px auto 0;background:linear-gradient(#a0a6c0,#6d7290);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:500}
+#callscr .nm{font-size:38px;font-weight:400;margin-top:22px;letter-spacing:-.4px}
+#callscr .no{font-size:15px;color:rgba(255,255,255,.6);margin-top:8px}
+#callscr .btns{position:absolute;left:0;right:0;bottom:92px;display:flex;justify-content:space-around;padding:0 40px}
+#callscr .b{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+#callscr .ctrls{position:absolute;left:0;right:0;bottom:200px;display:flex;justify-content:center;gap:28px}
+#callscr .ctrls div{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center}
+#artp{position:absolute;inset:0;z-index:50;background:#fbfaf7;overflow:hidden}
+#artp .bar{position:absolute;left:0;right:0;top:0;height:96px;background:#f2f0eb;z-index:3}
+#artp .url{position:absolute;left:16px;right:16px;top:44px;height:42px;border-radius:21px;background:#e6e3dc;display:flex;align-items:center;padding:0 16px;gap:8px;font:500 14px Inter;color:#4a4740}
+#artp .in{position:absolute;left:24px;right:24px;top:124px}
+#artp .art{width:auto}
+#artp .art h1{font-size:40px}
+#artp .art p{font-size:15.5px}
+#artp .art .hero{height:180px}
+#toast{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);white-space:nowrap;padding:12px 18px;border-radius:24px;background:rgba(20,22,32,.82);backdrop-filter:blur(20px);color:#fff;font:600 13.5px Manrope;display:flex;gap:9px;align-items:center;z-index:5}
+#hud{position:absolute;left:50%;bottom:100px;transform:translateX(-50%);padding:12px 18px;border-radius:24px;background:rgba(255,255,255,.12);backdrop-filter:blur(24px);box-shadow:0 0 0 .5px rgba(255,255,255,.2) inset;font:600 14px Manrope;display:flex;gap:8px;align-items:center;z-index:45;white-space:nowrap}
+#rowGlow{position:absolute;left:16px;width:361px;top:270px;height:66px;border-radius:22px 22px 0 0;box-shadow:0 0 0 1.5px rgba(255,176,103,.85),0 0 30px rgba(255,140,80,.35);z-index:30}
+#cardGlow{position:absolute;left:16px;width:361px;top:118px;height:68px;border-radius:26px;box-shadow:0 0 0 1.5px rgba(255,176,103,.85),0 0 30px rgba(255,140,80,.35);z-index:30}
+.touch{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:rgba(255,255,255,.35);box-shadow:0 0 0 1px rgba(255,255,255,.5);z-index:90}
+
+/* overlays */
+#fly{position:absolute;left:0;top:0;padding:10px 16px;border-radius:16px;font:600 15px Inter;white-space:nowrap;color:#fff;
+  background:rgba(255,255,255,.14);backdrop-filter:blur(18px);box-shadow:0 0 0 .5px rgba(255,255,255,.35) inset,0 14px 40px rgba(0,0,0,.4);z-index:200}
+#keys{position:absolute;left:560px;top:700px;display:flex;gap:10px;z-index:200}
+#keys div{min-width:62px;height:62px;padding:0 16px;border-radius:14px;display:flex;align-items:center;justify-content:center;font:500 26px Inter;color:#fff;
+  background:rgba(255,255,255,.12);backdrop-filter:blur(18px);box-shadow:0 0 0 .5px rgba(255,255,255,.35) inset,0 2px 0 rgba(255,255,255,.08) inset,0 14px 40px rgba(0,0,0,.4)}
+#caption{position:absolute;left:0;right:0;top:922px;text-align:center}
+#caption .eb{font:700 13px Manrope;letter-spacing:4.5px;color:#FFB067}
+#caption .ln{font:400 46px Serif;letter-spacing:-.2px;margin-top:8px;color:#f4f1ea}
+#caption .ln i{font-family:SerifI;font-style:normal;color:#FFC79A}
+#title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#title .icon{width:200px;height:200px;background:url(assets/orbit-icon-1024.png) center/contain no-repeat;filter:drop-shadow(0 30px 60px rgba(255,120,60,.25))}
+#title .wm{font:400 132px Serif;letter-spacing:-1px;margin-top:8px;line-height:1}
+#title .tg{font:400 30px Manrope;color:rgba(255,255,255,.72);margin-top:18px;letter-spacing:.2px}
+#title .tg i{font-family:SerifI;font-style:normal;font-size:36px;color:#FFC79A}
+#title .ft{font:600 13px Manrope;letter-spacing:4px;color:rgba(255,255,255,.45);margin-top:44px}
+#subs{position:absolute;left:0;right:0;top:848px;text-align:center;z-index:20}
+#subs span{display:inline-flex;gap:14px;align-items:baseline;padding:10px 22px;border-radius:22px;background:rgba(8,10,20,.55);backdrop-filter:blur(16px);box-shadow:0 0 0 .5px rgba(255,255,255,.14) inset}
+#subs b{font:700 12px Manrope;letter-spacing:3px;color:#FFB067}
+#subs em{font:500 27px Manrope;font-style:normal;color:#fff}
+.wave{display:flex;gap:3px;align-items:center;height:26px}
+.wave i{display:block;width:3px;border-radius:2px;background:currentColor}
+#soon{position:absolute;left:0;right:0;top:722px;text-align:center}
+#soon .e{font:700 13px Manrope;letter-spacing:4.5px;color:#FFB067}
+#soon .l{font:500 25px Manrope;color:rgba(255,255,255,.82);margin-top:16px;letter-spacing:.2px}
+#soon .l span{color:rgba(255,255,255,.3);margin:0 14px}
+#soon .r{font:400 50px SerifI;color:#FFC79A;margin-top:26px}
+#fade{position:absolute;inset:0;background:#000;pointer-events:none;z-index:999}
+</style></head>
+<body>
+<div id="stage">
+  <div class="glow" id="g1"></div><div class="glow" id="g2"></div><div class="glow" id="g3"></div>
+  <div id="cam">
+    <div id="mac">
+      <div id="macShadow"></div>
+      <div id="lid">
+        <div id="macScreen">
+          <div id="macUI">
+            <div id="wall"></div>
+
+            <div class="win" id="notes">
+              <div class="tl"><i></i><i></i><i></i></div>
+              <div class="title">Notes</div>
+              <div class="body">
+                <h1>Weekend</h1>
+                <div>Dinner on Saturday with Aanya</div>
+                <div style="position:relative"><div id="sel"></div><span id="addr" style="position:relative">Olive Bistro, 12th Main, Indiranagar</span></div>
+                <div>Table for two at 8:30</div>
+                <div style="color:rgba(255,255,255,.55)">Bring the book for Ria</div>
+              </div>
+            </div>
+
+            <div class="win" id="browser">
+              <div class="chrome">
+                <div class="tl" style="top:21px"><i></i><i></i><i></i></div>
+                <div class="tab"><span style="width:16px;height:16px;border-radius:4px;background:#b25d2c;display:flex;align-items:center;justify-content:center;font:700 10px Serif;color:#fff">F</span>The quiet art of designing less</div>
+                <div class="omni"><span data-i="lock" data-s="13"></span>fieldnotes.design/essays/designing-less</div>
+              </div>
+              <div id="page"><div id="pageInner"><div class="art">
+                <div class="kick">FIELD NOTES · ESSAY</div>
+                <h1>The quiet art of designing less</h1>
+                <div class="by">By Aanya Rao · 6 min read</div>
+                <div class="hero" id="hero1"></div>
+                <p>The best tools disappear. You stop noticing them the way you stop noticing a good chair — not because they do little, but because they never ask for your attention when they don’t need it.</p>
+                <p>Designing less is not removing features. It is removing every moment where a person has to think about the tool instead of the work: the extra tap, the confirmation nobody reads, the setting that should have been a sensible default.</p>
+                <p>Start with the one thing someone came to do, and make that effortless.</p>
+              </div></div></div>
+            </div>
+
+            <div class="win" id="finder">
+              <div class="tl"><i></i><i></i><i></i></div>
+              <div class="side">
+                <div class="h">Favourites</div>
+                <div><span data-i="clock" data-s="15"></span>Recents</div>
+                <div><span data-i="monitor" data-s="15"></span>Desktop</div>
+                <div><span data-i="download" data-s="15"></span>Downloads</div>
+                <div class="on"><span data-i="image" data-s="15"></span>Photos</div>
+              </div>
+              <div class="ttl">Photos</div>
+              <div class="grid" id="grid"></div>
+            </div>
+
+            <div id="menubar">
+              <span class="app" id="appname">Finder</span><span class="m">File</span><span class="m">Edit</span><span class="m">View</span><span class="m">Window</span><span class="m">Help</span>
+              <div class="r"><img src="assets/menubar.png"><span data-i="wifi" data-s="16"></span><span data-i="battery-full" data-s="20"></span><span>Wed 11 Nov&nbsp;&nbsp;9:41</span></div>
+            </div>
+
+            <div id="banner" class="glassMac">
+              <div class="row"><div class="ic"></div><div style="flex:1">
+                <div class="t">Aanya <span>now</span></div>
+                <div class="b" id="bannerBody">Dinner at 8? I booked Olive Bistro.</div>
+                <div class="sub">Messages · Galaxy S23</div>
+              </div></div>
+              <div id="reply"><span id="replyText">Reply</span><div class="send" id="sendBtn"><span data-i="arrow-up" data-s="15" data-w="2.4"></span></div></div>
+            </div>
+
+            <div id="call" class="glassMac">
+              <div class="av"><div class="ring" id="ring1"></div><div class="ring" id="ring2"></div>M</div>
+              <div class="wave abs" id="pWave" style="left:205px;top:29px;color:#30C752"><i></i><i></i><i></i><i></i><i></i></div><div style="flex:1"><div class="nm">Mom</div><div class="st" id="callSt">+91 98450 12345 · Galaxy S23</div></div>
+              <div class="rb" id="decl" style="left:263px;background:#FF3B30"><span data-i="phone-off" data-s="18" data-w="2.2"></span></div>
+              <div class="rb" id="acc" style="left:315px;background:#30C752"><span data-i="phone" data-s="18" data-w="2.2"></span></div>
+            </div>
+
+            <div id="dz" class="glassMac">
+              <div class="c" id="dzc"><span id="dzIcon" data-i="smartphone" data-s="32" data-w="2"></span><span id="dzCheck" class="abs" data-i="check" data-s="32" data-w="2.6"></span>
+                <svg class="abs" id="dzRing" width="88" height="88" style="left:-7px;top:-7px;transform:rotate(-90deg)"><circle cx="44" cy="44" r="41" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linecap="round" stroke-dasharray="257.6" stroke-dashoffset="257.6" id="dzArc"/></svg>
+              </div>
+              <div class="n">Galaxy S23</div><div class="cap" id="dzCap">Drop to send</div>
+            </div>
+
+            <div id="ghost"></div>
+            <div id="cursor"></div>
+          </div>
+          <div id="camNotch"></div>
+        </div>
+      </div>
+      <div id="base"></div>
+    </div>
+
+    <div id="phone">
+      <div id="pframe"></div>
+      <div id="pscreen"><div id="pUI">
+        <img class="pimg" id="s_home" src="assets/home-dark.jpg">
+        <img class="pimg" id="s_clipB" src="assets/clip-before-dark.jpg">
+        <img class="pimg" id="s_clipA" src="assets/clip-after-dark.jpg">
+        <img class="pimg" id="s_brw" src="assets/browsing-dark.jpg">
+        <img class="pimg" id="s_set" src="assets/settings-dark.jpg">
+        <img class="pimg" id="s_homeL" src="assets/home-light.jpg">
+        <div id="rowGlow"></div><div id="cardGlow"></div>
+        <div id="tabbar"><div id="pill"></div>
+          <div class="it" id="t0"><span data-i="orbit" data-s="22"></span>Orbit</div>
+          <div class="it" id="t1"><span data-i="clipboard" data-s="22"></span>Clipboard</div>
+          <div class="it" id="t2"><span data-i="globe" data-s="22"></span>Browsing</div>
+          <div class="it" id="t3"><span data-i="settings" data-s="22"></span>Settings</div>
+        </div>
+        <div id="hud"><span data-i="circle-check" data-s="18"></span>Copied</div>
+
+        <div id="artp">
+          <div class="bar"><div class="url"><span data-i="lock" data-s="14"></span>fieldnotes.design<span style="margin-left:auto" data-i="rotate-cw" data-s="15"></span></div></div>
+          <div class="in" id="artIn"><div class="art">
+            <div class="kick">FIELD NOTES · ESSAY</div>
+            <h1>The quiet art of designing less</h1>
+            <div class="by">By Aanya Rao · 6 min read</div>
+            <div class="hero" id="hero2"></div>
+            <p>The best tools disappear. You stop noticing them the way you stop noticing a good chair — not because they do little, but because they never ask for your attention when they don’t need it.</p>
+            <p>Designing less is not removing features. It is removing every moment where a person has to think about the tool instead of the work.</p>
+          </div></div>
+          <div id="toast"><span data-i="laptop" data-s="17"></span>Continued from MacBook Air</div>
+        </div>
+
+        <div id="callscr">
+          <div class="lbl" id="callLbl">Incoming call</div>
+          <div class="av">M</div>
+          <div class="nm">Mom</div>
+          <div class="no" id="callNo">Mobile · +91 98450 12345</div>
+          <div class="wave" id="cWave" style="justify-content:center;margin-top:26px;height:40px;color:rgba(255,255,255,.9)"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="ctrls" id="callCtrls"><div><span data-i="mic-off" data-s="24"></span></div><div><span data-i="grid-3x3" data-s="24"></span></div><div><span data-i="volume-2" data-s="24"></span></div></div>
+          <div class="btns" id="callBtns">
+            <div class="b" style="background:#FF3B30"><span data-i="phone-off" data-s="30" data-w="2"></span></div>
+            <div class="b" id="pAcc" style="background:#30C752"><span data-i="phone" data-s="30" data-w="2"></span></div>
+          </div>
+          <div class="btns" id="callEnd" style="justify-content:center"><div class="b" style="background:#FF3B30"><span data-i="phone-off" data-s="30" data-w="2"></span></div></div>
+        </div>
+
+        <div class="hu" id="hu1">
+          <div class="hd"><div class="ai" style="background:#1FA855"><span data-i="message-circle" data-s="12" data-w="2.4"></span></div>Messages · now</div>
+          <div class="tt">Aanya</div>
+          <div class="tx">Dinner at 8? I booked Olive Bistro.</div>
+          <div class="tx" id="huReply" style="color:rgba(255,255,255,.55)">You: On my way, see you at 8</div>
+        </div>
+        <div class="hu" id="hu2" style="display:flex;gap:14px;align-items:center">
+          <div style="flex:1"><div class="hd"><div class="ai" style="background:url(assets/orbit-icon-1024.png) center/130%"></div>Orbit · now</div>
+          <div class="tt">Lisbon.jpg</div><div class="tx">Saved to Downloads · 4.2 MB</div></div>
+          <div id="huThumb" style="width:58px;height:58px;border-radius:12px;overflow:hidden;flex:none"></div>
+        </div>
+
+        <div id="sbar"><span>9:41</span><div class="r"><span data-i="signal" data-s="15" data-w="2.2"></span><span data-i="wifi" data-s="15" data-w="2.2"></span><span data-i="battery-full" data-s="19" data-w="2"></span></div></div>
+        <div class="touch" id="touch"></div>
+      </div><div id="punch"></div></div>
+    </div>
+
+    <div id="fly">Olive Bistro, 12th Main, Indiranagar</div>
+    <div id="keys"><div>⌘</div><div>C</div></div>
+  </div>
+
+  <div id="scrim"></div>
+  <div id="caption"><div class="eb" id="capE"></div><div class="ln" id="capL"></div></div>
+  <div id="title"><div class="icon" id="tIcon"></div><div class="wm" id="tWm">Orbit</div><div class="tg" id="tTg"></div><div class="ft" id="tFt">NOTIFICATIONS · CALLS · CLIPBOARD · BROWSING · FILES</div></div>
+  <div id="vignette"></div>
+  <div id="subs"><span><b id="subWho"></b><em id="subTxt"></em></span></div>
+  <div id="soon"><div class="e">COMING NEXT</div><div class="l">Screen mirroring<span>·</span>Call audio on your Mac<span>·</span>Mac notifications on Android</div><div class="r">Releasing soon.</div></div>
+  <div id="fade"></div>
+</div>
+
+<script src="assets/icons.js"></script>
+<script src="assets/vo.js"></script>
+<script>
+// ───────── helpers ─────────
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, x) => a + (b - a) * x;
+const E = {
+  lin: x => x,
+  out: x => 1 - Math.pow(1 - x, 3),
+  inOut: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  soft: x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2,
+  spring: x => x >= 1 ? 1 : 1 - Math.exp(-6.5 * x) * Math.cos(7.5 * x),
+};
+const P = (t, a, b, e = E.inOut) => e(clamp((t - a) / (b - a)));
+// visible between a and b, with fade in/out durations
+const W = (t, a, b, fi = .45, fo = .45) => P(t, a, a + fi, E.out) * (1 - P(t, b - fo, b, E.inOut));
+function ic(name, size = 20, w = 1.6) {
+  return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${ICONS[name] || ''}</svg>`;
+}
+document.querySelectorAll('[data-i]').forEach(el => el.innerHTML = ic(el.dataset.i, +el.dataset.s || 20, +(el.dataset.w || 1.7)));
+const _html = {};
+function H(id, html) { if (_html[id] !== html) { _html[id] = html; $(id).innerHTML = html; } }
+function TX(id, txt) { if (_html[id] !== txt) { _html[id] = txt; $(id).textContent = txt; } }
+function st(id, o) { const s = $(id).style; for (const k in o) s[k] = o[k]; }
+function show(id, op, tf) { const s = $(id).style; s.opacity = op; s.visibility = op <= 0.001 ? 'hidden' : 'visible'; if (tf !== undefined) s.transform = tf; }
+
+// photos (drawn, not stock)
+const PH = [
+  ['Lisbon.jpg', ['#ffb36b', '#ff6f61', '#6a3d7a'], '#ffe2b0', ['#3b2340', '#5a2f4a']],
+  ['Coast.jpg', ['#8fd3ff', '#4c8fd6', '#1e3a6e'], '#fff6d8', ['#15325a', '#0f2747']],
+  ['Hampi.jpg', ['#ffd29a', '#f29b5c', '#a55a3a'], '#fff1c9', ['#6e3b26', '#4a2618']],
+  ['Ladakh.jpg', ['#cfe3ff', '#93b4e8', '#5a6fa8'], '#ffffff', ['#4a5680', '#2f3a5e']],
+  ['Kyoto.jpg', ['#ffc6c2', '#e68aa0', '#7a4a78'], '#fff0f0', ['#4b2a4a', '#2e1a33']],
+  ['Night.jpg', ['#2b2f6b', '#141838', '#05061a'], '#fff7d6', ['#0b0d24', '#05061a']],
+  ['Goa.jpg', ['#ffe08a', '#ffa45c', '#e0556a'], '#fffbe6', ['#1d4d5a', '#123842']],
+  ['Studio.jpg', ['#e9e3da', '#cfc5b8', '#a89c8c'], '#ffffff', ['#6d6458', '#4d463e']],
+];
+function photo(p) {
+  const [n, sky, sun, hills] = p;
+  return `<svg viewBox="0 0 124 92" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g${n}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[2]}"/><stop offset=".55" stop-color="${sky[1]}"/><stop offset="1" stop-color="${sky[0]}"/></linearGradient></defs>
+  <rect width="124" height="92" fill="url(#g${n})"/><circle cx="84" cy="50" r="12" fill="${sun}" opacity=".9"/>
+  <path d="M0 64 Q30 46 58 60 T124 54 V92 H0Z" fill="${hills[0]}"/><path d="M0 76 Q40 62 76 74 T124 70 V92 H0Z" fill="${hills[1]}"/></svg>`;
+}
+H('grid', PH.map((p, i) => `<div class="thumb"><div class="ph" id="ph${i}">${photo(p)}</div><div class="nm" id="nm${i}">${p[0]}</div></div>`).join(''));
+H('ghost', photo(PH[0])); H('huThumb', photo(PH[0]));
+const heroSvg = `<svg viewBox="0 0 640 280" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3d9bf"/><stop offset="1" stop-color="#d98f6a"/></linearGradient></defs><rect width="640" height="280" fill="url(#hg)"/><circle cx="430" cy="130" r="64" fill="#fbefe2" opacity=".85"/><rect x="0" y="200" width="640" height="80" fill="#c27a58" opacity=".55"/><rect x="120" y="96" width="4" height="104" fill="#5a3a2a" opacity=".6"/><circle cx="122" cy="92" r="22" fill="#7a5a44" opacity=".35"/></svg>`;
+H('hero1', heroSvg); H('hero2', heroSvg);
+
+const ARROW = `<svg width="26" height="34" viewBox="0 0 26 34"><path d="M2 2 L2 26 L8 20.5 L12.5 31 L16.5 29.3 L12.2 19 L20.5 19 Z" fill="#000" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+const BEAM = `<svg width="26" height="34" viewBox="0 0 26 34" style="transform:translate(-6px,-14px)"><path d="M6 4 Q10 4 11 6 Q12 4 16 4 M11 6 V26 M6 28 Q10 28 11 26 Q12 28 16 28" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/><path d="M6 4 Q10 4 11 6 Q12 4 16 4 M11 6 V26 M6 28 Q10 28 11 26 Q12 28 16 28" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+
+// geometry: mac logical → stage, phone dp → stage
+const MS = .783333, MX = 164 + 16, MY = 96 + 16;
+const PS = .895674, PX0 = 1454 + 11, PY = 92 + 11;
+
+// ───────── timeline ─────────
+const T_END = 69;
+// real time → scene time: hold 4 s while the call is live (two bars), hold 4 s on the end card
+function remap(t) { if (t < 21) return t; if (t < 25) return 21; if (t < 63) return t - 4; if (t < 67) return 59; return t - 8; }
+function voAt(R) {
+  for (const k of ['mom', 'me']) { const v = VO[k]; const i = Math.floor((R - v.start) * 60); if (i >= 0 && i < v.env.length) return [k, v.env[i]]; }
+  return [null, 0];
+}
+function bars(id, R, n, maxH, minH) {
+  const el = $(id).children;
+  for (let i = 0; i < n; i++) {
+    const [, e] = voAt(R - i * .035);
+    const shape = .55 + .45 * Math.abs(Math.sin(i * 1.9 + 1));
+    el[i].style.height = (minH + (maxH - minH) * e * shape) + 'px';
+  }
+}
+// cursor keyframes [t, x, y]
+const CUR = [
+  [0, 820, 600], [10.1, 820, 600], [10.95, 1248, 136], [13.7, 1248, 136], [14.0, 1396, 136], [15.3, 1396, 136], [16.6, 1080, 380],
+  [19.3, 1080, 380], [20.3, 1389, 82], [23.6, 1389, 82], [25.3, 900, 470],
+  [26.1, 345, 368], [26.4, 345, 368], [27.3, 676, 368], [28.6, 690, 470], [33.0, 720, 520], [36.0, 1150, 600], [41.2, 1150, 600],
+  [42.3, 562, 300], [42.65, 562, 300], [44.15, 1342, 428], [44.9, 1342, 428], [46.2, 1000, 560], [61, 1000, 560]];
+const CLICKS = [11.7, 14.0, 20.6, 23.2, 30.6];
+const DOWN = [[26.3, 27.35], [42.6, 44.3]];
+const CAM = [[0, 1, 960, 500], [8.7, 1, 960, 500], [9.7, 1.75, 1380, 392], [16.4, 1.75, 1380, 392], [17.3, 1.4, 1380, 418], [24.4, 1.4, 1380, 418],
+  [25.3, 1.3, 1120, 451], [32.7, 1.3, 1120, 451], [33.6, 1.22, 1070, 469], [40.7, 1.22, 1070, 469], [41.5, 1.3, 1115, 451], [48.6, 1.3, 1115, 451],
+  [49.6, 1, 960, 500], [99, 1, 960, 500]];
+// portrait phones see a narrow slice of the stage, so the camera follows the action between Mac and phone
+const PH_C = [1.25, 1641, 485];
+const CAM_P = [[0, ...PH_C], [9.5, ...PH_C], [10.2, 1.7, 1160, 205], [14.15, 1.7, 1160, 205], [14.7, ...PH_C], [17.2, ...PH_C],
+  [17.6, ...PH_C], [18.3, 1.7, 1160, 185], [23.6, 1.7, 1160, 185], [25.4, .95, 666, 430], [27.75, .95, 666, 430], [28.9, ...PH_C], [32.9, ...PH_C],
+  [33.7, .9, 650, 400], [34.3, .9, 650, 400], [34.9, ...PH_C], [40.8, ...PH_C], [41.6, .9, 720, 440], [42.6, .9, 720, 440], [43.6, 1.35, 1120, 430],
+  [45.3, 1.35, 1120, 430], [45.9, ...PH_C], [48.8, ...PH_C], [49.8, 1.15, 960, 485], [99, 1.15, 960, 485]];
+// landscape embed: action framed in the right ~60% of the stage (the page's text sits on the left)
+const PHL = [1.25, 1641, 482];
+const CAM_L = [[0, .82, 960, 500], [8.7, .82, 960, 500], [9.7, 1.3, 1423, 395], [10.5, 2.0, 1165, 215], [14.1, 2.0, 1165, 215], [14.75, 1.3, 1423, 395], [16.4, 1.3, 1423, 395], [17.3, 1.25, 1417, 430], [17.75, 1.25, 1417, 430], [18.5, 2.0, 1150, 195], [24.4, 2.0, 1150, 195],
+  [25.3, 1.45, 670, 430], [27.75, 1.45, 670, 430], [28.9, ...PHL], [32.7, ...PHL], [33.6, 1.12, 728, 460], [34.4, 1.12, 728, 460], [35.0, ...PHL], [40.7, ...PHL],
+  [41.5, 1.18, 840, 450], [45.4, 1.18, 840, 450], [46.0, ...PHL], [48.6, ...PHL], [49.6, 1, 960, 490], [99, 1, 960, 490]];
+let PORTRAIT = false;
+const LAYOUT = { fx: 960, sm: 1 };
+window.setPortrait = v => { PORTRAIT = !!v; };
+// landscape embed: the page puts its text on the left, so frame the action to the right
+window.setLayout = (fx, sm) => { LAYOUT.fx = fx; LAYOUT.sm = sm; };
+function camAt(t) {
+  const CAMX = PORTRAIT ? CAM_P : LAYOUT.fx !== 960 ? CAM_L : CAM;
+  let i = 0; while (i < CAMX.length - 2 && t > CAMX[i + 1][0]) i++;
+  const a = CAMX[i], b = CAMX[i + 1]; const k = E.inOut(clamp((t - a[0]) / (b[0] - a[0])));
+  const breath = 1 + .006 * Math.sin(t * .4);
+  return [lerp(a[1], b[1], k) * breath, lerp(a[2], b[2], k), lerp(a[3], b[3], k)];
+}
+function cursorAt(t) {
+  let i = 0; while (i < CUR.length - 2 && t > CUR[i + 1][0]) i++;
+  const [t0, x0, y0] = CUR[i], [t1, x1, y1] = CUR[i + 1];
+  const k = E.inOut(clamp((t - t0) / Math.max(.001, t1 - t0)));
+  return [lerp(x0, x1, k), lerp(y0, y1, k)];
+}
+// phone tab selection keyframes [t, index]
+const TABS = [[0, 0], [25.35, 1], [33.6, 2], [40.9, 0], [50.5, 1], [51.7, 2], [52.9, 3], [54.15, 0]];
+function tabAt(t) {
+  let prev = TABS[0][1], val = prev;
+  for (const [tt, idx] of TABS) { if (t >= tt) { val = lerp(prev, idx, E.spring(clamp((t - tt) / .55))); prev = idx; } }
+  return val;
+}
+// phone screens: [id, from, to]
+const SCR = [['s_home', 0, 25.5], ['s_clipB', 25.5, 29.0], ['s_clipA', 29.0, 33.75], ['s_brw', 33.75, 41.05], ['s_home', 41.05, 50.65],
+  ['s_clipA', 50.65, 51.85], ['s_brw', 51.85, 53.05], ['s_set', 53.05, 54.3], ['s_homeL', 54.3, 99]];
+const XF = .32;
+
+function caption(t, a, b, eb, ln) {
+  const v = W(t, a, b, .6, .5);
+  if (v > 0) { TX('capE', eb); H('capL', ln); }
+  return v;
+}
+
+function renderAt(t, R) {
+  // background light
+  const d = R * 0.13;
+  st('g1', { left: (1350 + 60 * Math.cos(d)) + 'px', top: (-420 + 40 * Math.sin(d)) + 'px', width: '1300px', height: '1100px', background: 'radial-gradient(closest-side,rgba(255,154,77,.30),rgba(255,154,77,.08) 60%,transparent)' });
+  st('g2', { left: (-520 + 50 * Math.sin(d * .8)) + 'px', top: (180 + 40 * Math.cos(d)) + 'px', width: '1400px', height: '1200px', background: 'radial-gradient(closest-side,rgba(59,84,184,.42),rgba(59,84,184,.10) 60%,transparent)' });
+  st('g3', { left: (1100 + 50 * Math.sin(d * 1.1 + 2)) + 'px', top: (620 + 30 * Math.cos(d + 1)) + 'px', width: '1200px', height: '900px', background: 'radial-gradient(closest-side,rgba(28,111,128,.30),transparent)' });
+  st('fade', { opacity: 1 - P(t, 0, 1.2, E.soft) + P(t, 59.6, 61, E.soft) });
+
+  // camera: push in on each feature
+  const [cs0, ccx, ccy] = camAt(t);
+  const cs = cs0 * LAYOUT.sm;
+  st('cam', { transform: `translate(${LAYOUT.fx - ccx * cs}px, ${500 - ccy * cs}px) scale(${cs})` });
+  show('scrim', LAYOUT.fx === 960 ? clamp((cs0 - 1) / .25) : 0);
+
+  // ── title (intro + outro)
+  const introV = 1 - P(t, 3.9, 4.7);
+  const outroV = P(t, 55.5, 56.6, E.out);
+  const tv = t < 30 ? introV : outroV;
+  const iconIn = t < 30 ? P(t, .3, 1.8, E.out) : P(t, 55.5, 56.8, E.out);
+  show('title', tv > 0 ? 1 : 0, `translateY(${t < 30 ? -40 * P(t, 3.9, 4.7) : 0}px)`);
+  show('tIcon', iconIn * tv, `scale(${.86 + .14 * iconIn})`);
+  const wmIn = t < 30 ? P(t, 1.0, 2.1, E.out) : P(t, 55.9, 57.0, E.out);
+  show('tWm', wmIn * tv, `translateY(${18 * (1 - wmIn)}px)`);
+  const tgIn = t < 30 ? P(t, 1.8, 2.8, E.out) : P(t, 56.5, 57.5, E.out);
+  H('tTg', t < 30 ? 'Your Android, <i>at home</i> on your Mac.' : 'Android and Mac, <i>finally</i> in sync.');
+  show('tTg', tgIn * tv, `translateY(${14 * (1 - tgIn)}px)`);
+  show('tFt', t < 30 ? 0 : P(t, 57.2, 58.2) * tv);
+  if (t < 30) $('tWm').style.letterSpacing = (8 * (1 - wmIn) - 1) + 'px';
+
+  // ── devices in / tour / out
+  const macIn = P(t, 4.3, 6.0, E.out), phIn = P(t, 4.6, 6.3, E.out);
+  const tour = P(t, 49.0, 50.2, E.inOut);
+  const devOut = P(t, 54.9, 55.8, E.inOut);
+  show('mac', macIn * (1 - P(t, 49.0, 49.8)), `translateY(${70 * (1 - macIn)}px) translateX(${-70 * tour}px) scale(${1 - .03 * tour})`);
+  const phX = 120 * (1 - phIn) + (773 - 1454) * tour;
+  show('phone', phIn * (1 - devOut), `translateX(${phX}px) scale(${1 + .1 * tour - .04 * devOut})`);
+
+  // captions
+  let cv = 0;
+  cv = Math.max(cv, caption(t, 6.0, 8.8, 'ORBIT', 'Connects by itself. <i>No accounts,</i> no cloud.'));
+  cv = Math.max(cv, caption(t, 9.3, 16.8, 'NOTIFICATIONS', 'Reply without <i>reaching</i> for your phone.'));
+  cv = Math.max(cv, caption(t, 17.3, 24.8, 'CALLS', 'Your phone rings on your Mac. <i>Answer</i> from there.'));
+  cv = Math.max(cv, caption(t, 25.3, 32.8, 'CLIPBOARD', 'Copy on your Mac. It’s <i>already</i> on your phone.'));
+  cv = Math.max(cv, caption(t, 33.3, 40.8, 'BROWSING', 'Start reading on your Mac. <i>Finish</i> on the go.'));
+  cv = Math.max(cv, caption(t, 41.3, 48.8, 'FILES', 'Drag. Drop. <i>It’s on your phone.</i>'));
+  cv = Math.max(cv, caption(t, 49.6, 55.0, 'DESIGN', 'Glass, light and quiet. <i>Made to feel native.</i>'));
+  show('caption', cv, `translateY(${12 * (1 - cv)}px)`);
+
+  // ── mac: menu bar app name
+  TX('appname', t > 41 ? 'Finder' : t > 33 ? 'Chrome' : t > 25 ? 'Notes' : 'Finder');
+
+  // notification banner
+  const bIn = E.spring(clamp((t - 9.8) / .7)), bOut = P(t, 15.0, 15.5, E.inOut);
+  show('banner', t < 9.8 || t > 15.5 ? 0 : 1, `translateX(${380 * (1 - bIn) + 380 * bOut}px)`);
+  const hover = P(t, 10.85, 11.15);
+  st('banner', { height: (76 + 50 * hover) + 'px' });
+  show('reply', hover);
+  const typed = 'On my way, see you at 8';
+  if (t < 11.75) H('replyText', 'Reply');
+  else if (t < 14.05) {
+    const n = Math.floor(clamp((t - 12.05) / 1.6) * typed.length);
+    const caretOn = Math.floor(t * 2.2) % 2 === 0 || (t > 12.05 && t < 13.7);
+    H('replyText', `<span style="color:#fff">${typed.slice(0, n)}</span><span id="caret" style="opacity:${caretOn ? 1 : 0}"></span>`);
+  } else H('replyText', `<span style="color:#fff;display:flex;gap:6px;align-items:center">${ic('check', 15, 2.4)} Sent</span>`);
+  st('sendBtn', { opacity: t > 14.05 ? 0 : (t > 12.1 ? 1 : .35), transform: `scale(${t > 13.95 && t < 14.1 ? .86 : 1})` });
+
+  // call panel
+  const cIn = E.spring(clamp((t - 17.6) / .7)), cOut = P(t, 23.8, 24.25);
+  show('call', t < 17.6 || t > 24.25 ? 0 : 1, `translateY(${-130 * (1 - cIn) - 130 * cOut}px)`);
+  const ringing = t < 20.65;
+  for (const [id, off] of [['ring1', 0], ['ring2', .6]]) {
+    const ph = ((t - 17.6 + off) % 1.2) / 1.2;
+    show(id, ringing ? (1 - ph) * .7 : 0, `scale(${1 + ph * .7})`);
+  }
+  if (t < 20.65) TX('callSt', '+91 98450 12345 · Galaxy S23');
+  else if (t < 23.25) { const s = Math.floor(R - 20.65); TX('callSt', `0:${String(s).padStart(2, '0')} · On Galaxy S23`); }
+  else TX('callSt', 'Call ended');
+  show('decl', t < 20.65 ? 1 : 0);
+  st('acc', { background: t < 20.65 ? '#30C752' : '#FF3B30', transform: `rotate(${t < 20.65 ? 0 : 135}deg) scale(${(t > 20.5 && t < 20.7) || (t > 23.1 && t < 23.3) ? .88 : 1})` });
+
+  // notes window + selection
+  const nV = W(t, 25.0, 33.2, .5, .4);
+  show('notes', nV, `scale(${.97 + .03 * nV})`);
+  const selW = $('addr').offsetWidth;
+  st('sel', { left: '-2px', top: '4px', width: (selW + 4) * P(t, 26.4, 27.3, E.lin) + 'px' });
+  show('sel', t > 26.35 ? 1 : 0);
+
+  // browser window
+  const brV = W(t, 33.0, 41.2, .5, .4);
+  show('browser', brV, `scale(${.97 + .03 * brV})`);
+  st('pageInner', { transform: `translateY(${-150 * P(t, 34.0, 35.4, E.inOut)}px)` });
+
+  // finder + drag
+  const fV = W(t, 41.0, 49.0, .5, .4);
+  show('finder', fV, `scale(${.97 + .03 * fV})`);
+  const dragging = t > 42.65 && t < 44.3;
+  const sel0 = t > 42.6 && t < 46;
+  st('nm0', { background: sel0 ? '#0A64D8' : 'transparent', color: sel0 ? '#fff' : '' });
+  st('ph0', { boxShadow: sel0 ? '0 0 0 3px rgba(255,255,255,.25),0 2px 8px rgba(0,0,0,.4)' : '0 2px 8px rgba(0,0,0,.4)' });
+  const [cx, cy] = cursorAt(t);
+  const intoDz = P(t, 44.3, 44.6, E.inOut);
+  show('ghost', (dragging || (t >= 44.3 && t < 44.6)) ? .92 * (1 - intoDz) : 0,
+    `translate(${lerp(cx - 62, 1340 - 62, intoDz)}px, ${lerp(cy - 50, 380 - 46, intoDz)}px) rotate(${-4 * (1 - intoDz)}deg) scale(${1 - .7 * intoDz})`);
+  const dzIn = E.spring(clamp((t - 43.0) / .6)), dzOut = P(t, 46.4, 46.85);
+  st('dz', { left: (1440 + 10 - (168 + 26) * dzIn + (168 + 26) * dzOut) + 'px' });
+  show('dz', t > 43 && t < 46.9 ? 1 : 0, `scale(${1 + .05 * W(t, 43.9, 44.4, .15, .15)})`);
+  const prog = P(t, 44.55, 45.5, E.inOut);
+  st('dzArc', { strokeDashoffset: 257.6 * (1 - prog) });
+  show('dzRing', t > 44.5 && t < 45.6 ? 1 : 0);
+  show('dzIcon', t < 45.5 ? 1 : 0); show('dzCheck', t >= 45.5 ? 1 : 0, `scale(${E.spring(clamp((t - 45.5) / .5))})`);
+  TX('dzCap', t < 44.3 ? 'Drop to send' : t < 45.5 ? 'Sending…' : 'Sent');
+
+  // cursor
+  const beam = t > 26.15 && t < 27.45;
+  H('cursor', beam ? BEAM : ARROW);
+  let cs2 = 1; for (const c of CLICKS) if (t > c - .08 && t < c + .1) cs2 = .84;
+  for (const [a, b] of DOWN) if (t > a && t < b) cs2 = Math.min(cs2, .92);
+  show('cursor', P(t, 5.6, 6.2) * (1 - P(t, 48.7, 49.2)), `translate(${cx}px, ${cy}px) scale(${cs2})`);
+
+  // ── phone screens
+  for (const id of ['s_home', 's_clipB', 's_clipA', 's_brw', 's_set', 's_homeL']) $(id).style.opacity = 0;
+  for (const [id, a, b] of SCR) {
+    const v = clamp((t - a) / XF + 1) * clamp((b - t) / XF);   // overlap crossfade
+    const el = $(id); const cur = +el.style.opacity; if (v > cur) el.style.opacity = v;
+  }
+  const light = clamp((t - 54.3) / XF + 1);
+  // tab bar
+  const tb = tabAt(t);
+  const itemW = (393 - 56 - 12) / 4;
+  st('pill', { left: (6 + itemW * tb) + 'px', width: itemW + 'px', background: `rgba(255,255,255,${lerp(.12, .85, light)})` });
+  st('tabbar', { background: `rgba(${lerp(14, 246, light)},${lerp(19, 242, light)},${lerp(38, 236, light)},${lerp(.55, .62, light)})`,
+    boxShadow: `0 0 0 1px rgba(255,255,255,${lerp(.10, .7, light)}) inset, 0 20px 40px rgba(0,0,0,.35)` });
+  for (let i = 0; i < 4; i++) {
+    const sel = clamp(1 - Math.abs(tb - i));
+    const on = light > .5 ? [24, 27, 38] : [236, 239, 247], off = light > .5 ? [110, 114, 128] : [150, 158, 182];
+    $('t' + i).style.color = `rgb(${lerp(off[0], on[0], sel)},${lerp(off[1], on[1], sel)},${lerp(off[2], on[2], sel)})`;
+  }
+  $('sbar').style.color = (light > .5 || (t > 36.45 && t < 40.9)) ? '#1a1c24' : '#fff';
+
+  show('rowGlow', W(t, 29.0, 30.4, .3, .6));
+  show('cardGlow', W(t, 34.5, 36.1, .4, .3));
+  show('hud', W(t, 30.7, 31.9, .2, .3), `translateX(-50%) translateY(${8 * (1 - P(t, 30.7, 31.0, E.out))}px)`);
+
+  // touches [time, x, y]
+  const TOUCH = [[30.6, 190, 303], [36.0, 200, 152], [50.45, 28 + 6 + itemW * 1.5, 805], [51.65, 28 + 6 + itemW * 2.5, 805], [52.85, 28 + 6 + itemW * 3.5, 805]];
+  let tv2 = 0, tx = 0, ty = 0, tsc = 1;
+  for (const [tt, x, y] of TOUCH) { if (t > tt - .12 && t < tt + .45) { const k = (t - tt + .12) / .57; tv2 = Math.sin(Math.PI * k); tx = x; ty = y; tsc = .7 + .5 * k; } }
+  show('touch', tv2 * .9, `translate(${tx}px, ${ty}px) scale(${tsc})`);
+  st('touch', { left: '0px', top: '0px' });
+
+  // article page
+  const aIn = P(t, 36.2, 36.75, E.out), aOut = P(t, 40.7, 41.1);
+  show('artp', aIn * (1 - aOut), `translateY(${40 * (1 - aIn)}px)`);
+  st('artIn', { transform: `translateY(${-24}px)` });
+  show('toast', W(t, 37.0, 39.8, .4, .4), `translateX(-50%) translateY(${10 * (1 - P(t, 37, 37.4, E.out))}px)`);
+
+  // call screen
+  const csIn = P(t, 17.3, 17.75, E.out), csOut = P(t, 23.4, 23.85);
+  show('callscr', csIn * (1 - csOut), `scale(${1.04 - .04 * csIn})`);
+  TX('callLbl', t < 20.65 ? 'Incoming call' : t < 23.25 ? `0:${String(Math.floor(R - 20.65)).padStart(2, '0')}` : 'Call ended');
+  TX('callNo', t < 20.65 ? 'Mobile · +91 98450 12345' : 'Answered on MacBook Air');
+  show('callBtns', t < 20.65 ? 1 : 0);
+  show('callCtrls', P(t, 20.65, 21.0)); show('callEnd', P(t, 20.65, 21.0));
+  st('pAcc', { transform: `translateY(${t < 20.65 ? -6 * Math.abs(Math.sin((t - 17.3) * 3.2)) : 0}px)` });
+
+  // heads-up notifications
+  const h1 = E.spring(clamp((t - 9.3) / .6)), h1o = P(t, 16.0, 16.4);
+  show('hu1', t > 9.3 && t < 16.4 ? 1 : 0, `translateY(${-160 * (1 - h1) - 160 * h1o}px)`);
+  show('huReply', P(t, 14.3, 14.6));
+  st('huReply', { maxHeight: (22 * P(t, 14.25, 14.55)) + 'px', marginTop: (4 * P(t, 14.25, 14.55)) + 'px' });
+  const h2 = E.spring(clamp((t - 45.7) / .6)), h2o = P(t, 47.8, 48.2);
+  show('hu2', t > 45.7 && t < 48.2 ? 1 : 0, `translateY(${-140 * (1 - h2) - 140 * h2o}px)`);
+
+  // clipboard flight (stage coords, inside #cam)
+  const fl = P(t, 27.8, 28.95, E.inOut);
+  const sx = MX + 514 * MS, sy = MY + 367 * MS, ex = PX0 + 196 * PS, ey = PY + 303 * PS;
+  const fx = lerp(sx, ex, fl), fy = lerp(sy, ey, fl) - 150 * Math.sin(Math.PI * fl);
+  show('fly', W(t, 27.8, 29.0, .15, .2), `translate(${fx}px, ${fy}px) translate(-50%,-50%) scale(${1 - .25 * fl})`);
+  show('keys', W(t, 27.35, 28.5, .15, .35), `translateY(${10 * (1 - P(t, 27.35, 27.6, E.out))}px)`);
+  st('keys', { left: (MX + 470 * MS) + 'px', top: (MY + 640 * MS) + 'px' });
+}
+
+function render(R) {
+  const t = remap(R);
+  renderAt(t, R);
+  // call: live voice — subtitles and level meters follow the actual audio
+  const [who] = voAt(R);
+  const sub = R > 20.95 && R < 23.75 ? ['MOM', 'Hi beta! Coming home for dinner tonight?'] : R > 23.85 && R < 26.95 ? ['YOU', 'Yes, Ma! Leaving now. See you soon.'] : null;
+  const sv = sub ? Math.min(1, (R - (R < 23.8 ? 20.95 : 23.85)) / .25, ((R < 23.8 ? 23.75 : 26.95) - R) / .25) : 0;
+  if (sub) { TX('subWho', sub[0]); TX('subTxt', sub[1]); }
+  show('subs', sv, `translateY(${6 * (1 - sv)}px)`);
+  const live = R > 20.7 && R < 27.2;
+  show('pWave', live ? 1 : 0); show('cWave', live ? 1 : 0);
+  if (live) { bars('pWave', R, 5, 22, 3); bars('cWave', R, 7, 38, 4); }
+  st('pWave', { color: who === 'me' ? '#FFB067' : '#30C752' });
+  // end card: coming next
+  const sn = P(R, 62.9, 63.9, E.out) * (1 - P(R, 67.6, 69));
+  show('soon', sn, `translateY(${16 * (1 - P(R, 62.9, 63.9, E.out))}px)`);
+  const lift = P(R, 62.6, 63.6, E.inOut);
+  if (R > 55) { $('title').style.transform = `translateY(${-92 * lift}px)`; $('tFt').style.opacity = (+$('tFt').style.opacity) * (1 - P(R, 62.4, 62.9)); }
+}
+window.render = render; window.T_END = T_END;
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode().catch(() => {}))]);
+// live preview when opened normally
+if (location.search.includes('embed')) document.documentElement.classList.add('embed');
+else if (!location.search.includes('capture')) {
+  const t0 = performance.now(); const tick = () => { render(((performance.now() - t0) / 1000) % T_END); requestAnimationFrame(tick); }; window.ready.then(tick);
+}
+</script>
+</body></html>
