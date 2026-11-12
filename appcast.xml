@@ -6,6 +6,52 @@
     <description>Orbit for Mac updates</description>
     <language>en</language>
     <item>
+      <title>Orbit 0.11.0</title>
+      <pubDate>Thu, 12 Nov 2026 19:54:55 GMT</pubDate>
+      <sparkle:version>12</sparkle:version>
+      <sparkle:shortVersionString>0.11.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+<p><strong>Codes from your phone, one click on your Mac — plus your phone's notifications in the Orbit window, calls and sound on the Mac, and a calmer Overview.</strong></p>
+<h3>What's new</h3>
+<h4>🔑 Codes, one click away</h4>
+<p>When a text or sign-in message with a one-time code arrives on your phone, it drops in just under your Mac's menu bar: who sent it ("HDFC Bank", not "VM-HDFCBK-S") and the code, large. Click it, then paste with ⌘V. The latest code also waits at the top of Orbit's menu and the Orbit window for a few minutes.</p>
+<ul>
+<li>Prefer no clicks at all? Turn on <strong>Settings › Codes › Copy codes automatically</strong>.</li>
+<li>One alert, not two: a code you copy doesn't leave a notification behind; one you ignore goes to Notification Center, where clicking it copies the code.</li>
+<li>Works even if your messaging app's notifications are turned off for the Mac.</li>
+</ul>
+<h4>🔔 Notifications in the Orbit window</h4>
+<p>A new <strong>Notifications</strong> section shows your phone's notifications by app — WhatsApp, Telegram, Slack, Gmail and the rest — with pictures, inline reply and the app's own buttons. Clear them here and they're gone from your phone. Click one to open the app on your Mac, its website, or the app on your phone. Every notification on your Mac also has <strong>Copy Text</strong>.</p>
+<h4>💬 Texts you can read at a glance</h4>
+<p>Messages now shows businesses by name with a symbol for what they sent (codes, payments, updates), keeps offers out of the way (they have their own filter), and groups a company's texts together. Filter by <strong>People</strong>, <strong>Updates</strong> or <strong>Offers</strong>. The Messages badge counts people waiting on you, not unread promotions.</p>
+<h4>📞 Calls and sound on your Mac</h4>
+<p>Answer and talk on your Mac's speakers and microphone, and hear your phone's sound there. A one-time setup on the phone does the work — Orbit pairs itself with Android's Wireless debugging while you watch, and restarts its helper by itself after a reboot or Wi-Fi change. Look for <strong>Set up on phone</strong> on the Mac.</p>
+<h4>🫧 A new call bar</h4>
+<p>Calls now arrive in a capsule that grows and shrinks like the Dynamic Island: names are never cut off, it slims to a pill during a call (hover for controls), you can drag it anywhere, and push it into the screen edge to tuck it away.</p>
+<h4>🪟 A calmer Mac</h4>
+<ul>
+<li><strong>Overview</strong> is a glance now — a few calls, texts and notifications, the latest code on top — and fits any window or screen without cutting anything off.</li>
+<li><strong>One menu bar icon</strong>: what's playing and file transfers live inside Orbit's own icon.</li>
+<li><strong>Updates</strong> come in one tidy Orbit window that steps through checking, what's new and installing.</li>
+</ul>
+<h3>Updating</h3>
+<ul>
+<li><strong>Mac</strong> — Orbit offers this update by itself ("A new version is available"), or choose <strong>Check for Updates…</strong> in the menu.</li>
+<li><strong>Android</strong> — open Orbit and tap <strong>Update</strong> on the card at the top. Your connection and history stay put.</li>
+<li>Still on 0.9.0? Download both apps once more from the website.</li>
+</ul>
+<h3>Known limitations</h3>
+<ul>
+<li>The Mac build isn't notarized yet: the first launch needs System Settings › Privacy &amp; Security › <strong>Open Anyway</strong>.</li>
+<li>Calls and sound on the Mac need the one-time setup on the phone, and both devices on the same Wi-Fi.</li>
+<li>Texts come from your phone's SMS; chat-style RCS messages in Google/Samsung Messages aren't included yet.</li>
+<li>If Android blocks the install or says "Restricted setting", the one-minute fixes are at &lt;https://ansh1902396.github.io/orbit-releases/install-help/&gt;.</li>
+</ul>
+      ]]></description>
+      <enclosure url="https://github.com/Ansh1902396/orbit-releases/releases/download/v0.11.0/Orbit-macOS.zip" length="5583299" type="application/octet-stream" sparkle:edSignature="yNy+kcllwxAWMlI7KXc0LYqHaHpjPJ7rMPDTyKiI5O0XTxrY1g+yEz27L41kPuCgOUGMuspPgeBRwRGqVgaGAw=="/>
+    </item>
+    <item>
       <title>Orbit 0.10.0</title>
       <pubDate>Thu, 12 Nov 2026 07:33:08 GMT</pubDate>
       <sparkle:version>11</sparkle:version>
