@@ -9,7 +9,7 @@
 <meta property="og:title" content="Orbit — Your Android, at home on your Mac">
 <meta property="og:description" content="Notifications, calls, clipboard, tabs and files between your Android phone and your Mac. No account. No cloud.">
 <meta property="og:image" content="https://ansh1902396.github.io/orbit-releases/assets/poster.jpg">
-<meta property="og:video" content="https://ansh1902396.github.io/orbit-releases/assets/orbit-demo.mp4">
+<meta property="og:video" content="https://ansh1902396.github.io/orbit-releases/assets/orbit-film.mp4">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/favicon.png">
@@ -157,6 +157,35 @@ body.open .menu i:last-child{transform:translateY(-3.75px) rotate(-45deg)}
 .card:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),rgba(255,176,103,.13),transparent 60%);opacity:0;transition:opacity .5s}
 .card:hover:before{opacity:1}
 .card.w2{grid-column:span 2}
+.card.w3{grid-column:1/-1}
+/* codes: a text lands on the phone, the code drops in on the Mac, copy, paste */
+.otp{width:100%;max-width:880px;display:flex;align-items:center;justify-content:center;gap:clamp(14px,3vw,34px);font-family:system-ui,-apple-system,sans-serif}
+.otp .sms{flex:0 1 270px;display:flex;gap:11px;padding:13px 14px;border-radius:20px;background:rgba(30,31,38,.85);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.2),0 20px 50px rgba(0,0,0,.45);font-size:13px;line-height:1.35;opacity:0;transform:translateY(10px) scale(.97);transition:opacity .45s var(--ease),transform .55s var(--spring)}
+.otp .sms .ai{flex:none;width:30px;height:30px;border-radius:9px;background:#1FA855;display:flex;align-items:center;justify-content:center;color:#fff}
+.otp .sms span{color:var(--muted)}
+.otp .sms b{display:block;font-weight:600;margin-bottom:1px}
+.otp .way{flex:0 1 120px;height:40px;position:relative}
+.otp .way svg{width:100%;height:100%;overflow:visible}
+.otp .way circle{opacity:0}
+.otp .mac{flex:0 1 400px;min-width:0;border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);overflow:hidden;padding-bottom:18px}
+.otp .mbar{display:flex;justify-content:flex-end;align-items:center;gap:12px;height:26px;padding:0 12px;background:rgba(255,255,255,.05);font-size:11.5px;color:var(--muted)}
+.otp .mbar svg{width:13px;height:13px}
+.otp .cap{margin:10px auto 0;width:max-content;max-width:94%;display:flex;align-items:center;gap:10px;padding:7px 8px 7px 8px;border-radius:999px;background:rgba(40,41,50,.92);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.2),0 14px 34px rgba(0,0,0,.45);opacity:0;transform:translateY(-14px) scale(.92);transform-origin:top;transition:opacity .35s var(--ease),transform .55s var(--spring)}
+.otp .cap .k{flex:none;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#FFB067,#FF6F61);display:flex;align-items:center;justify-content:center;color:#fff;transition:background .4s}
+.otp .cap .k svg{width:14px;height:14px}
+.otp .cap .who{font-size:12px;line-height:1.2;min-width:104px}
+.otp .cap .who small{display:block;color:var(--dim);font-size:11px}
+.otp .cap .code{font:600 19px ui-rounded,system-ui,sans-serif;letter-spacing:.06em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.otp .cap .cp{flex:none;font-size:12px;font-weight:600;padding:6px 13px;border-radius:999px;background:#FF9A4D;color:#1b1206;transition:transform .2s var(--spring),background .3s,color .3s}
+.otp .field{margin:22px auto 0;width:min(84%,260px)}
+.otp .field small{display:block;font-size:11px;color:var(--dim);margin-bottom:6px}
+.otp .field .in{height:38px;border-radius:10px;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);display:flex;align-items:center;padding:0 12px;font:600 16px ui-rounded,system-ui,sans-serif;letter-spacing:.18em}
+.otp.s1 .sms{opacity:1;transform:none}
+.otp.s2 .way circle{opacity:1}
+.otp.s3 .cap{opacity:1;transform:none}
+.otp.s4 .cap .k{background:linear-gradient(135deg,#5BCC80,#28A061)}
+.otp.s4 .cap .cp{background:rgba(255,255,255,.12);color:var(--muted)}
+.otp .cp.press{transform:scale(.88)}
 .card .vis{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:200px}
 .card h4{font-size:30px;line-height:1.05;margin-top:22px}
 .card p{color:var(--muted);font-size:15.5px;margin-top:8px;max-width:440px}
@@ -322,7 +351,7 @@ footer .links a:hover{color:var(--text)}
 }
 @media (max-width:620px){
   body{font-size:16px}
-  .bento{grid-template-columns:1fr}.card.w2{grid-column:auto}.card{min-height:340px;padding:24px}
+  .bento{grid-template-columns:1fr}.card.w2,.card.w3{grid-column:auto}.otp{flex-direction:column}.otp .way{height:34px;width:40px;flex:none;transform:rotate(90deg)}.otp .sms,.otp .mac{flex:none;width:100%}.otp .cap{gap:8px}.otp .cap .who{min-width:0}.otp .cap .who small{display:none}.otp .cap .code{font-size:16px}.otp .cap .cp{padding:6px 10px}.card{min-height:340px;padding:24px}
   .hero{padding-top:120px}
   .hero .ctas{flex-direction:column;align-items:stretch;width:100%;max-width:340px}
   .hero .ctas .btn{width:100%}
@@ -359,7 +388,7 @@ footer .links a:hover{color:var(--text)}
 <header class="hero" id="top">
   <canvas id="ringBack" aria-hidden="true"></canvas>
   <div class="in">
-    <a class="pill f" href="#whatsnew"><b>NEW</b>Calls, contacts &amp; texts on your Mac<span data-i="chevron-right" data-s="14"></span></a>
+    <a class="pill f" href="#whatsnew"><b>NEW</b>Codes from your phone, one click on your Mac<span data-i="chevron-right" data-s="14"></span></a>
     <h1><span class="ln"><span>Your Android,</span></span><span class="ln"><span><span class="it gold">at home</span> on your Mac.</span></span></h1>
     <p class="lede f" style="transition-delay:.45s">Notifications, calls, clipboard, tabs and files — flowing between your phone and your Mac the moment they’re near. No account. No cloud.</p>
     <div class="ctas f" style="transition-delay:.6s">
@@ -413,6 +442,19 @@ footer .links a:hover{color:var(--text)}
         <h4>Reconnects on its own.</h4>
         <p>No buttons. Walk up to your Mac and you’re connected.</p>
       </div>
+      <div class="card w3" data-r>
+        <div class="vis"><div class="otp" id="otp">
+          <div class="sms"><div class="ai"><span data-i="message-circle" data-s="16" data-w="2"></span></div><div><b>HDFC Bank</b><span>482913 is your OTP for NetBanking login. Valid for 5 mins. Do not share.</span></div></div>
+          <div class="way"><svg viewBox="0 0 120 40" preserveAspectRatio="none"><path d="M0 20 C 40 0, 80 40, 120 20" fill="none" stroke="rgba(255,255,255,.18)" stroke-dasharray="2 7" stroke-width="1.5"/><circle id="otpDot" r="4" fill="#FFB067" cx="0" cy="20"/></svg></div>
+          <div class="mac">
+            <div class="mbar"><span data-i="orbit" data-s="13"></span><span data-i="wifi" data-s="13"></span><span>Wed 9:41</span></div>
+            <div class="cap"><div class="k" id="otpK"><span data-i="key-round" data-s="14" data-w="2.2"></span></div><div class="who"><b>HDFC Bank</b><small id="otpSub">Verification code</small></div><div class="code">482 913</div><div class="cp" id="otpBtn">Copy</div></div>
+            <div class="field"><small>One-time password</small><div class="in"><span id="otpIn"></span><span class="caret"></span></div></div>
+          </div>
+        </div></div>
+        <h4>Codes, one click away.</h4>
+        <p>A code texted to your phone appears on your Mac the moment it lands. Click to copy, ⌘V to paste — or let Orbit copy it for you.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -435,14 +477,14 @@ footer .links a:hover{color:var(--text)}
 <section class="sec" id="film" style="padding-top:20px">
   <div class="wrap center">
     <div class="eyebrow" data-r>The film</div>
-    <h2 data-r="2">Seventy seconds. <span class="it gold">Everything it does.</span></h2>
+    <h2 data-r="2">Ninety seconds. <span class="it gold">A day with Orbit.</span></h2>
     <div class="film" id="filmCard" data-film data-r="3" role="button" tabindex="0" aria-label="Play the Orbit film">
-      <video id="preview" src="assets/orbit-demo.mp4" poster="assets/poster.jpg" muted loop playsinline preload="none"></video>
-      <div class="ov"><div class="big"><span data-i="play" data-w="2.2"></span></div><span>WATCH WITH SOUND · 1:09</span></div>
+      <video id="preview" src="assets/orbit-film.mp4" poster="assets/film-poster.jpg" muted loop playsinline preload="none"></video>
+      <div class="ov"><div class="big"><span data-i="play" data-w="2.2"></span></div><span>WATCH WITH SOUND · 1:34</span></div>
     </div>
   </div>
 </section>
-<dialog id="dlg" aria-label="Orbit film"><div class="box"><button class="x" id="dlgX" aria-label="Close"><span data-i="x"></span></button><video id="full" src="assets/orbit-demo.mp4" controls playsinline preload="none"></video></div></dialog>
+<dialog id="dlg" aria-label="Orbit film"><div class="box"><button class="x" id="dlgX" aria-label="Close"><span data-i="x"></span></button><video id="full" src="assets/orbit-film.mp4" controls playsinline preload="none"><track kind="captions" src="assets/orbit-film.vtt" srclang="en" label="English"></video></div></dialog>
 
 <section class="sec" id="how" style="padding-top:40px">
   <div class="wrap center">
@@ -477,9 +519,8 @@ footer .links a:hover{color:var(--text)}
     <div class="eyebrow" data-r>Coming next</div>
     <h2 data-r="2">This is <span class="it gold">just the beginning.</span></h2>
     <div class="soon" data-r="3">
-      <div>Screen mirroring <small>SOON</small></div>
-      <div>Call audio on your Mac <small>SOON</small></div>
       <div>Mac notifications on Android <small>SOON</small></div>
+      <div>RCS chats in Messages <small>SOON</small></div>
     </div>
   </div>
 </section>
@@ -490,20 +531,20 @@ footer .links a:hover{color:var(--text)}
     <h2 data-r="2">Bring your phone <span class="it gold">into orbit.</span></h2>
     <p class="lede" data-r="3">Free during the beta. Install both apps, open them on the same Wi-Fi, and you’re done.</p>
     <div class="news" id="whatsnew" data-r="3">
-      <div class="nhead"><span class="eyebrow">What’s new</span><b id="newsVer">Orbit 0.10</b></div>
+      <div class="nhead"><span class="eyebrow">What’s new</span><b id="newsVer">Orbit 0.11</b></div>
       <div class="nitems">
-        <div><span data-i="app-window"></span><p><b>The Orbit window.</b> Your phone at home on your Mac — wallpaper, time and latest messages, with what’s playing and who called beside it.</p></div>
-        <div><span data-i="phone"></span><p><b>Calls, contacts &amp; texts.</b> A real keypad, all your contacts, and texts and chats in one list — call and reply from your Mac.</p></div>
-        <div><span data-i="monitor"></span><p><b>Show your phone.</b> See and use your phone in a window on your Mac, with your mouse and keyboard.</p></div>
-        <div><span data-i="globe"></span><p><b>Pick up where you left off.</b> YouTube and Spotify continue on your Mac at the same moment; your Mac’s page waits on your phone.</p></div>
+        <div><span data-i="key-round"></span><p><b>Codes, one click away.</b> A code texted to your phone drops in under your Mac’s menu bar — click, then ⌘V. Or let Orbit copy it for you.</p></div>
+        <div><span data-i="bell"></span><p><b>Notifications in the Orbit window.</b> WhatsApp, Slack, Gmail and the rest, by app — with pictures, replies and the app’s own buttons.</p></div>
+        <div><span data-i="volume-2"></span><p><b>Calls and sound on your Mac.</b> Talk through your Mac’s speakers and mic, and hear your phone there. A one-time setup on the phone does the work.</p></div>
+        <div><span data-i="message-square"></span><p><b>Texts at a glance.</b> Banks and shops by name, offers out of the way, and a calmer Overview that fits any screen.</p></div>
       </div>
-      <p class="small">Already on 0.9.1? Orbit offers the update by itself — one tap on each device.</p>
+      <p class="small">Already on 0.10? Orbit offers the update by itself — one tap on each device.</p>
     </div>
     <div class="dl" id="dl">
       <div class="dcard" id="macCard" data-r>
         <div class="eyebrow">For your Mac</div>
         <h3>Orbit for Mac</h3>
-        <div class="meta" id="macMeta">Version 0.10 · macOS 14 or later · Apple silicon</div>
+        <div class="meta" id="macMeta">Version 0.11 · macOS 14 or later · Apple silicon</div>
         <div class="row"><a class="btn sun mag" href="https://github.com/Ansh1902396/orbit-releases/releases/latest/download/Orbit-macOS.dmg"><span data-i="download"></span>Download for Mac</a>
           <a class="small" href="https://github.com/Ansh1902396/orbit-releases/releases/latest/download/Orbit-macOS.zip">or .zip</a></div>
         <ol><li>Open the download and drag Orbit into Applications.</li><li>The first time, open System Settings › Privacy &amp; Security and choose “Open Anyway”.</li><li>Orbit appears in your menu bar.</li></ol>
@@ -511,7 +552,7 @@ footer .links a:hover{color:var(--text)}
       <div class="dcard" id="apkCard" data-r="2">
         <div class="eyebrow">For your phone</div>
         <h3>Orbit for Android</h3>
-        <div class="meta" id="apkMeta">Version 0.10 · Android 10 or later</div>
+        <div class="meta" id="apkMeta">Version 0.11 · Android 10 or later</div>
         <div class="row"><a class="btn sun mag" href="https://github.com/Ansh1902396/orbit-releases/releases/latest/download/Orbit-Android.apk"><span data-i="download"></span>Download for Android</a>
           <div class="qr" title="Scan with your phone"><img src="assets/qr-android.png" alt="QR code to download the Android app"></div></div>
         <ol><li>Scan the code, or open this page on your phone.</li><li>Allow your browser to install apps when Android asks.</li><li>Open Orbit and follow the three quick steps.</li></ol>
@@ -530,7 +571,8 @@ footer .links a:hover{color:var(--text)}
       <details><summary>Is Orbit free?<i></i></summary><div class="a"><p>Yes. Orbit is free during the beta, with no ads and no account.</p></div></details>
       <details><summary>Which phones and Macs does it work with?<i></i></summary><div class="a"><p>Any phone running Android 10 or later, and any Mac with Apple silicon running macOS 14 Sonoma or later. Both need to be on the same Wi-Fi.</p></div></details>
       <details><summary>Does my data go through a server?<i></i></summary><div class="a"><p>No. Your phone and your Mac talk to each other directly on your network, encrypted end to end. There’s no Orbit cloud.</p></div></details>
-      <details><summary>Can I talk through my Mac during a call?<i></i></summary><div class="a"><p>Not yet — today you can see, answer, decline and dial calls from your Mac while the conversation stays on your phone. Call audio on your Mac is next on our list.</p></div></details>
+      <details><summary>Can I talk through my Mac during a call?<i></i></summary><div class="a"><p>Yes — since Orbit 0.11. Answer on your Mac and the call’s sound moves to your Mac’s speakers and microphone; your phone’s music and videos can play there too. It needs a one-time setup on the phone: choose <b>Set up on phone</b> on your Mac and Orbit walks you through it (it turns on Android’s Wireless debugging and pairs by itself). Both devices need to be on the same Wi-Fi.</p></div></details>
+      <details><summary>Can Orbit copy codes from my texts?<i></i></summary><div class="a"><p>Yes — since Orbit 0.11. When a text or sign-in message with a one-time code reaches your phone, it appears just under your Mac’s menu bar with the sender and the code. Click it and paste with ⌘V. Prefer no clicks? Turn on <b>Settings › Codes › Copy codes automatically</b>. Codes go straight from your phone to your Mac — never through a server, and never back to the phone.</p></div></details>
       <details><summary>Can I call and text from my Mac?<i></i></summary><div class="a"><p>Yes — since Orbit 0.10. Open the Orbit window on your Mac: Calls has your recent calls and a keypad, Contacts has everyone, and Messages brings texts and chats together. Calls and texts go out through your phone. Orbit asks on the phone once to allow contacts, call history and texts; it all stays between your phone and your Mac.</p></div></details>
       <details><summary>Can I use my phone from my Mac?<i></i></summary><div class="a"><p>Choose <b>Show phone</b> in Orbit’s menu and your phone appears in a window on your Mac — tap, type and scroll with your mouse and keyboard. Android asks once each time you start (“Start now”).</p></div></details>
       <details><summary>Can I copy on my phone and paste on my Mac?<i></i></summary><div class="a"><p>Yes — since Orbit 0.9.1, copying works both ways. Android only lets the app on screen read what you copy, so Orbit asks for one switch (“Orbit — copy to your Mac”) the first time. It only looks at what you copy, never your screen, and skips passwords.</p></div></details>
@@ -701,6 +743,26 @@ const story = (() => {
       txt.textContent = ''; sub.textContent = 'Mobile';
       for (const ch of 'Mom') { txt.textContent += ch; await sleep(160); }
       await sleep(700); go.style.transform = 'scale(.86)'; await sleep(160); go.style.transform = ''; sub.textContent = 'Calling on your phone…'; await sleep(2600);
+    }
+  })();
+
+  // codes: text lands → code drops in on the Mac → Copy → ⌘V
+  const otp = $('#otp'); let otpOn = false; onView(otp, v => otpOn = v);
+  (async function codes() {
+    const dot = $('#otpDot'), btn = $('#otpBtn'), sub = $('#otpSub'), field = $('#otpIn'), k = $('#otpK');
+    const keyIcon = k.innerHTML;
+    const done = () => { otp.className = 'otp s1 s3 s4'; btn.textContent = 'Copied'; sub.textContent = 'Copied — paste with ⌘V'; field.textContent = '482913'; k.innerHTML = ic('check', 14, 2.4); };
+    while (true) {
+      if (reduce) { done(); await sleep(1000); continue; }
+      if (!otpOn) { await sleep(500); continue; }
+      otp.className = 'otp'; btn.textContent = 'Copy'; sub.textContent = 'Verification code'; field.textContent = ''; k.innerHTML = keyIcon;
+      await sleep(700); otp.classList.add('s1'); await sleep(900);
+      otp.classList.add('s2');
+      for (let t = 0; t <= 1; t += 0.05) { dot.setAttribute('cx', 120 * t); dot.setAttribute('cy', 20 - 15 * Math.sin(Math.PI * t) * (t < .5 ? 1 : -1)); await sleep(22); }
+      otp.classList.remove('s2'); otp.classList.add('s3'); await sleep(1500);
+      btn.classList.add('press'); await sleep(170); btn.classList.remove('press');
+      otp.classList.add('s4'); btn.textContent = 'Copied'; sub.textContent = 'Copied — paste with ⌘V'; k.innerHTML = ic('check', 14, 2.4);
+      await sleep(900); field.textContent = '482913'; await sleep(3400);
     }
   })();
 
