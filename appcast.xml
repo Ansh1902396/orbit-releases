@@ -6,6 +6,44 @@
     <description>Orbit for Mac updates</description>
     <language>en</language>
     <item>
+      <title>Orbit 0.10.0</title>
+      <pubDate>Thu, 12 Nov 2026 07:33:08 GMT</pubDate>
+      <sparkle:version>11</sparkle:version>
+      <sparkle:shortVersionString>0.10.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+<p><strong>Your phone, at home on your Mac — a new Orbit window, calls, contacts and texts, and a fresh design throughout.</strong></p>
+<h3>What's new</h3>
+<h4>🪟 The Orbit window</h4>
+<p>Open Orbit on your Mac and your phone is right there: your wallpaper, the time and your latest messages, with what's playing, who called and things to pick up beside it. It sits in the Dock while it's open, adapts to any window size, and looks at home in Light and Dark Mode. Click the phone to call, message, show it on your Mac or send a file.</p>
+<h4>📞 Calls, contacts and texts on your Mac</h4>
+<p>Recent calls with clear missed / incoming / outgoing marks, a proper keypad that finds people as you type, and all your contacts — one click to call through your phone. Messages brings texts and chats (WhatsApp, Telegram and more) into one list, and you can reply from the Mac.</p>
+<p>Orbit asks on your phone once — <strong>Allow</strong> for contacts, call history and texts. If you set Orbit up before, you'll see a card on the phone's Home screen; you can also find it in Settings › <em>Your phone on your Mac</em>.</p>
+<h4>✨ A new look</h4>
+<p>A new design across both apps: Apple's New York serif for names and titles, quiet symbols, rounded glass. The menu bar panel is now a set of Control Center–style tiles — Show phone, Sound, Clipboard, Send file — with what's playing, a call field with your favourites, and your latest message.</p>
+<h4>📱 Show your phone on your Mac</h4>
+<p>Choose <strong>Show phone</strong> to see and use your phone in a window on your Mac — tap, type and scroll with your mouse and keyboard.</p>
+<h4>▶️ Pick up where you left off</h4>
+<p>Watching YouTube or listening to Spotify on your phone? It appears in your Mac's menu bar — click it, or drag it into any browser, and it continues at the same moment (YouTube) while your phone pauses. And the page open on your Mac now waits for you on the phone: in the notification shade any time, and as a small capsule at the top of the screen when you pick the phone up.</p>
+<h4>🎨 Little things</h4>
+<p>Real site icons, Orbit's own artwork when a song has no cover, your wallpaper on the Mac (pick it once in Settings › <em>Your wallpaper on the Mac</em>), and a calmer, darker call bar with the controls you expect.</p>
+<h3>Updating</h3>
+<ul>
+<li><strong>Mac</strong> — Orbit offers this update by itself ("A new version is available"), or choose <strong>Check for Updates…</strong> in the menu.</li>
+<li><strong>Android</strong> — open Orbit and tap <strong>Update</strong> on the card at the top. Your connection and history stay put.</li>
+<li>Still on 0.9.0? Download both apps once more from the website.</li>
+</ul>
+<h3>Known limitations</h3>
+<ul>
+<li>The Mac build isn't notarized yet: the first launch needs System Settings › Privacy &amp; Security › <strong>Open Anyway</strong>.</li>
+<li>Texts come from your phone's SMS; chat-style RCS messages in Google/Samsung Messages aren't included yet.</li>
+<li>Hearing your phone's sound — and taking calls — on the Mac's speakers and microphone is coming soon.</li>
+<li>If Android doesn't show the Allow prompt, Orbit walks you through App info › ⋮ › <strong>Allow restricted settings</strong> (needed for apps installed from the web).</li>
+</ul>
+      ]]></description>
+      <enclosure url="https://github.com/Ansh1902396/orbit-releases/releases/download/v0.10.0/Orbit-macOS.zip" length="5213166" type="application/octet-stream" sparkle:edSignature="0yawJ9npVPxSah/UGeX+9WXO4J3cai7rRjtGmhZgDMhaj8u0jAz2lLzr/sHzbEUPt0NGk2d/pXOHCMqn5PQZDg=="/>
+    </item>
+    <item>
       <title>Orbit 0.9.1</title>
       <pubDate>Wed, 11 Nov 2026 16:34:17 GMT</pubDate>
       <sparkle:version>10</sparkle:version>
