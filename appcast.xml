@@ -6,6 +6,40 @@
     <description>Orbit for Mac updates</description>
     <language>en</language>
     <item>
+      <title>Orbit 0.11.1</title>
+      <pubDate>Fri, 13 Nov 2026 04:16:43 GMT</pubDate>
+      <sparkle:version>13</sparkle:version>
+      <sparkle:shortVersionString>0.11.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+<p><strong>A tidier Mac: a new menu bar panel, an Overview that fills big screens, and proper app icons.</strong></p>
+<h3>What's new</h3>
+<h4>🎛️ A new menu bar panel</h4>
+<p>Orbit's menu is now rounded glass that's always exactly as tall as what's in it — no more empty strip under the buttons when something you were playing stops, or a code expires. It opens under Orbit's icon, closes when you click elsewhere or press Esc, and you can type in the call field right away. Toggles that are on now light up in Orbit's orange, and <strong>Send file</strong> no longer cuts off your phone's name.</p>
+<h4>🖥️ The Overview, at any size</h4>
+<p>On a big display or in full screen, your phone now stands at full height and the cards reach down beside it — with roomier rows and two-line previews instead of a half-empty window. On a MacBook Air, the phone is larger too, and Favourites fill the space they're given.</p>
+<h4>📱 The phone, polished</h4>
+<p>Hover over the phone for <strong>Call</strong>, <strong>Message</strong>, <strong>Show</strong> and <strong>Send</strong>: the buttons now fit any phone size, with matching icons and labels that never wrap, and the notifications step aside while they're showing.</p>
+<h4>🔔 Real app icons</h4>
+<p>Notifications keep their apps' own icons, even after Orbit restarts. Until an app's icon arrives, you'll see its initial — not a borrowed Messages bubble.</p>
+<h4>🔑 Codes</h4>
+<p>A code leaves the menu by itself once it's too old to use.</p>
+<h3>Updating</h3>
+<ul>
+<li><strong>Mac</strong> — Orbit offers this update by itself ("A new version is available"), or choose <strong>Check for Updates…</strong> in the menu.</li>
+<li><strong>Android</strong> — nothing new on the phone this time; if Orbit offers the update, it's the same app with a matching version number.</li>
+</ul>
+<h3>Known limitations</h3>
+<ul>
+<li>The Mac build isn't notarized yet: the first launch needs System Settings › Privacy &amp; Security › <strong>Open Anyway</strong>.</li>
+<li>Calls and sound on the Mac need the one-time setup on the phone, and both devices on the same Wi-Fi.</li>
+<li>Texts come from your phone's SMS; chat-style RCS messages in Google/Samsung Messages aren't included yet.</li>
+<li>If Android blocks the install or says "Restricted setting", the one-minute fixes are at &lt;https://ansh1902396.github.io/orbit-releases/install-help/&gt;.</li>
+</ul>
+      ]]></description>
+      <enclosure url="https://github.com/Ansh1902396/orbit-releases/releases/download/v0.11.1/Orbit-macOS.zip" length="5606677" type="application/octet-stream" sparkle:edSignature="FOvr6IZib32kUHtlhYZFVUMhfugTgW9Tpqo+BfLMIm78DdYLtSAMHvjs7tV7HR6AYfrHipuFjIVt0OEyqUtwAw=="/>
+    </item>
+    <item>
       <title>Orbit 0.11.0</title>
       <pubDate>Thu, 12 Nov 2026 19:54:55 GMT</pubDate>
       <sparkle:version>12</sparkle:version>
